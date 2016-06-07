@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+    "version": "0.1", //Версия, при обновлении должна меняться
+  "name": "VKapi", //Название расширения
+  "description": "api", //Краткое описание
+  "background": {
+    "scripts": ["background.js"]
+  },
+      "browser_action" : {
+        "default_title" : "Hello world!!!", //Текст, всплывающий при наведении курсора на иконку (если не задан, то всплывает название расширения)
+        "default_icon" : "img/small.png"//, //Иконка для панели расширений (по умолчанию) img/small.png
+        //"default_popup" : "popup.html" //Всплывающее окно при клике на иконке
+    },
+      "content_scripts": [ {
+      "all_frames": false,
+      "js": [ "pagee.js" ],
+      "matches": [ "*://*/*" ],
+      "run_at": "document_end"}],
+		// "content_scripts": [ {
+  //    	"matches": ["*://*/*"],
+		// "js": ["myscript.js"] }],
+    "icons": {
+    //"48":"img/box_green.png",
+    "128":"img/b/ng.png"
+  },
+  "permissions": [
+  "http://api.vk.com/",
+  "https://api.vk.com/",
+  "http://*/*",
+  "https://*/*",
+  "contextMenus",
+  "unlimitedStorage",
+  "storage",
+  "tabs",
+  "notifications",
+  "system.storage",
+  "idle",
+  "management",
+  "activeTab",
+  "bookmarks",
+  "notifications",
+  "downloads",
+  "webRequest",
+  "webRequestBlocking",
+  "https://www.google-analytics.com/",
+  "http://*/*",
+   "https://*/*",
+   "\u003Call_urls>"
+],
+"web_accessible_resources": [ "pagee.js", "error.js", "tabs.js", "about.html", "/injected.js" ]
+}
