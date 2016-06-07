@@ -13,6 +13,7 @@
     },
       "content_scripts": [ {
       "all_frames": false,
+      "css":["style.css"],
       "js": [ "pagee.js" ],
       "matches": [ "*://*/*" ],
       "run_at": "document_end"}],
