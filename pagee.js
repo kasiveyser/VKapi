@@ -76,26 +76,15 @@ var i = 1;
 			div = document.createElement('div');
 			div.className = "alert";
 			div.innerHTML = "<br>" + text ;
-			console.log(i + "\t" + text);
-		
-			//var myTabi = document.getElementsByClassName('.myTabi');
-			//$(".myTabi").children(div);
+			//console.log(i + "\t" + text);
 			document.getElementById("mytabi").appendChild(div);
-			// window.setTimeout(function(){
-			/*$(".myTaby").append(div);*/
-			//console.log(div);
-		// }, 5);
-			
-			// var list2 = document.getElementsByClassName(".myTabi")[0];
-			// list2.insertBefore(div, list2.children);
 			
 			content.style.background = "cyan";
 			if(out) {
 				div.style.background = "#bbb";};
-			if(read_state){
+				if(read_state){
 				div.style.border = "2px solid grey"
-			}else{div.style.border = "2px solid orange"}
-
+				}else{div.style.border = "2px solid orange"}
 			i++;
 			if (i < 10)
 				dialogi();
@@ -116,6 +105,7 @@ else {
 chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
   console.log(response.status);
 });
+
 
 window.setInterval(function(){
 	chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
@@ -142,4 +132,4 @@ window.setInterval(function(){
 
 
 });
-}, 500);
+}, 300);
