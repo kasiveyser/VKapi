@@ -185,7 +185,7 @@ list.insertBefore(divs, list.children[0]);
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.method == "getStatus")
-      sendResponse({status: localStorage['x']});
+      sendResponse({status: localStorage['x'], msg: localStorage['msgList']});
     else
       sendResponse({}); // snub them.
 });
