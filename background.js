@@ -113,7 +113,8 @@ var Auth = {
 var news,
 	result,
 	text,
-	localStorage;
+	localStorage,
+	count = 0;
 
 var i = 0, w = 0, h = 0;
 window.setInterval( function() {
@@ -135,13 +136,19 @@ request.onreadystatechange = function(e) {
 request.send(null);
 }, 320);
 
-function loc(i){
-localStorage.msgListDate = result.response[(i)].date;
-localStorage.msgListTitle = result.response[(i)].title;
-localStorage.msgListBody = result.response[(i)].body;
-localStorage.msgListUid = result.response[(i)].uid;
-console.log(i);
-}
+window.setInterval( function() {
+	var c = 0;
+	for(var i = 1; i < 10; i++){
+	if ((result.response[(i)].out === 0)&&(result.response[(i)].read_state === 0)){
+		c += 1;
+	}
+	}
+
+	if(count != c) count = c
+		else if(c === 0) count = "";
+	chrome.browserAction.setBadgeText({text: count.toString()});
+	console.log(count);
+}, 3320);
 
 // chrome.browserAction.setBadgeText({text: badge_text});
 // chrome.browserAction.setTitle({title: title_text});
@@ -154,41 +161,33 @@ chrome.contextMenus.create({
 });
 
 
-var script_srcs = ['pagee.js'];
 
 chrome.browserAction.onClicked.addListener(function(/*tab*/) {
+	// var script_srcs = ['pagee.js'];
 	// script_srcs.forEach(function executeScript(src) {
 	// 	chrome.tabs.executeScript(null, {
 	// 		'file': src
 	// 	});
 	// });
 	//chrome.browserAction.setBadgeText("1");
+
+	// chrome.browserAction.setIcon({path:"new_icon.png"});
 	console.log("ok");
 	if(localStorage.x == 0) localStorage.x = 1
 	else localStorage.x = 0;
 	console.log(localStorage.x);
+	count = "";
+	chrome.browserAction.setBadgeText({text: count});
 
 window.setTimeout (function() {
-	divs = document.createElement('div');
-divs.innerHTML = '<div class="myTabi" style="\
-    position: fixed;\
-    right: 0;\
-    height: 100%;\
-    background: #333;\
-    width: 50px;\
-    z-index: 99999;\
-    top: 0px;\
-"></div>';
-var list = document.getElementsByTagName("BODY")[0];
-//list.insertBefore(divs, list.children/*[0]*/);
-list.insertBefore(divs, list.children[0]);
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.method == "getStatus")
-      sendResponse({status: localStorage['x'], msg: localStorage['msgList']});
-    else
-      sendResponse({}); // snub them.
-});
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	    if (request.method == "getStatus")
+	      sendResponse({status: localStorage['x'], msg: localStorage['msgList']});
+	    else
+	      sendResponse({}); // snub them.
+	});
+
 
 	return localStorage.x
 }, 10);
