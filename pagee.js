@@ -38,14 +38,11 @@ var _true = function _tru (){window.setTimeout (function() {
 	//divs.id = "mytabi";
 	divs.style = "position: fixed;\
     right: 0;\
-    height: 100%;\
-    background: #efefef;\
-    width: 300px;\
-    z-index: 99999;\
+    z-index: 9999;\
     top: 0px;";
-	divs.innerHTML = "<nav id='content' style='height:50px;border-bottom: 2px solid #555;background: #ccd;'>\
+	divs.innerHTML = "<nav id='content' >\
 		</nav>\
-		<section id='mytabi' style='overflow: auto; height: 100%'>\
+		<section id='mytabi' >\
 		</section>\
 		";
 
@@ -79,12 +76,12 @@ var i = 1;
 			//console.log(i + "\t" + text);
 			document.getElementById("mytabi").appendChild(div);
 			
-			content.style.background = "cyan";
+			// content.style.background = "cyan";
 			if(out) {
 				div.style.background = "#bbb";};
 				if(read_state){
-				div.style.border = "2px solid grey"
-				}else{div.style.border = "2px solid orange"}
+				div.className = "alert read"
+				}else{div.className = "alert unread"}
 			i++;
 			if (i < 10)
 				dialogi();

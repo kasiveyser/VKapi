@@ -1,13 +1,13 @@
 /* * { margin: 0; padding: 0; border: 0; } */
 
 .myTabi {
-	background: #fcfcfc;
+	background: #efefef;
 	width: 320px;
 	height: 100%;
 	/*font: bold 13px/15px 'Open Sans', Arial, Helvetica, sans-serif;*/
 }
 
-nav #content{
+#content {
 	border-bottom: 2px solid #555;
 	height: 50px;
 	background: cyan;
@@ -40,10 +40,13 @@ li a{
 	max-height: 300px;
 	overflow: auto;
 	font-size: 14px;
+	text-align:left;
+	border-bottom: 1px solid black;
 }
 
 #mytabi {
 	overflow: auto;
+	height: 100%;
 }
 
 ol, ul, nav {
@@ -75,4 +78,12 @@ ol, ul, nav {
 }
 #mytabi::-webkit-scrollbar-corner {
     background-color: transparent;
+}
+
+.read {
+	border-left:4px solid grey;
+}
+
+.unread {
+	border-left:4px solid orange;
 }
