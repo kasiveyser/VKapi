@@ -12,8 +12,6 @@ setTimeout( function() {
 	console.log(localStorage.x);
 }, 50);
 
-
-
 var _false = function _fals(){ window.setTimeout (function() {
 	//divs = document.createElement('div');
 	//divs.innerHTML = '';
@@ -40,7 +38,7 @@ var _true = function _tru (){window.setTimeout (function() {
     right: 0;\
     z-index: 9999;\
     top: 0px;";
-	divs.innerHTML = "<nav id='content' >\
+	divs.innerHTML = "<nav id='content_vk' >\
 		</nav>\
 		<section id='mytabi' >\
 		</section>\
@@ -90,6 +88,8 @@ var i = 1;
 }, 0);
 };
 
+(localStorage.x) ? _true() : _false();
+
 /*window.setInterval(function(){
 if (localStorage.x == 1){
 	_true();
@@ -106,26 +106,35 @@ chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
 
 window.setInterval(function(){
 	chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
+		if (localStorage.x != response.status)
+			if(response.status) {
+				_true();
+			}
+				else _false();
+
 		localStorage.x = response.status;
 		msgList = JSON.parse(response.msg);
 		//console.log(response.status);
 		//console.log(localStorage.x);
+			// if (localStorae.x != response.status)
+			// 	if(response.status) _true()
+			// 		else _false();
 
-			if (localStorage.x != i){
-				if(i==1){
-				_true();
-			}
-			else {
-				_false();
-			};
-			};
+			// if (localStorage.x != i){
+			// 	if(i==1){
+			// 	_true();
+			// }
+			// else {
+			// 	_false();
+			// };
+			// };
 
-			if (localStorage.x == 1){
-				i=1;
-			}
-			else {
-				i=0;
-			};
+			// if (localStorage.x == 1){
+			// 	i=1;
+			// }
+			// else {
+			// 	i=0;
+			// };
 
 
 });
