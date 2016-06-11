@@ -107,9 +107,7 @@ chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
 window.setInterval(function(){
 	chrome.runtime.sendMessage({method: "getStatus"}, function(response) {
 		if (localStorage.x != response.status)
-			if(response.status) {
-				_true();
-			}
+			if(response.status) _true()
 				else _false();
 
 		localStorage.x = response.status;
@@ -138,4 +136,4 @@ window.setInterval(function(){
 
 
 });
-}, 300);
+}, 100);

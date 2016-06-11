@@ -111,6 +111,7 @@ var news,
 	result,
 	text,
 	localStorage,
+	usInf = {},
 	count = 0;
 
 var i = 0, w = 0, h = 0;
@@ -147,7 +148,23 @@ window.setInterval( function() {
 		else if(c === 0) count = "";
 	chrome.browserAction.setBadgeText({text: count.toString()});
 	console.log(count);
+
+	i = 1;
+	var inf = function (){
+	// var i = 1;
+	var uid = result.response[(i)].uid;
+	usInf[(uid)] = {id: uid};
+	i++;
+	if(i <= 10)
+		inf();
+};
+inf();
+console.log(usInf);
 }, 3320);
+//
+
+
+
 
 // chrome.browserAction.setBadgeText({text: badge_text});
 // chrome.browserAction.setTitle({title: title_text});
