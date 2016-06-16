@@ -69,19 +69,14 @@ var i = 1;
 		var dateTime = date.getHours() +":" + date.getMinutes() +":" + date.getSeconds()/*.toLocaleString("ru", options)*/;
 		var title = msgList.response[(i)].title;
 		var uid = msgList.response[(i)].uid;
-		// usInf 
-		//		if (usInf[(uid)].photo_100 === undefined) reqUsInf();
-		//console.log(usInf[(uid)]);
-		//if("attachment" in result.response[i])
-		var foto = usInf[uid].photo_100;
-		//console.log(foto);
 
-		//console.log(usInf);
+		var foto = usInf[uid].photo_100;
+		var name = usInf[uid].first_name + " " + usInf[uid].last_name;
 
 
 		var out = msgList.response[(i)].out;
 		var read_state = msgList.response[(i)].read_state;
-		text = "<img src=" + foto + ">" + "<br>" + uid + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
+		text = "<img src=" + foto + ">" + "<br>" + name + "<br>" + uid + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
 			div = document.createElement('div');
 			div.className = "alert";
 			div.innerHTML = "<br>" + text ;

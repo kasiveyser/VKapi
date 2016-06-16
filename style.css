@@ -44,6 +44,11 @@ li a{
 	border-bottom: 1px solid black;
 }
 
+.alert img{
+    float: left;
+    margin-right: 10px;
+}
+
 #mytabi {
 	overflow: auto;
 	height: 100%;
