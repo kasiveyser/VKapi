@@ -16,6 +16,7 @@ var options = {
 };
 
 		var dialogi = function(){
+			var i = 1;
 		var body = msgList.response[(i)].body;
 		var date = new Date((msgList.response[(i)].date)*1000);
 		var dateTime = date.getHours() +":" + date.getMinutes() +":" + date.getSeconds()/*.toLocaleString("ru", options)*/;

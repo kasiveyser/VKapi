@@ -4,8 +4,11 @@
 
 
 var i;
-var text, div, date, uid, uidRes, localStorage;
+var text, div, date, uid, localStorage;
 var msgList;
+var usInf;
+var request = new XMLHttpRequest();
+
 
 setTimeout( function() {
 	console.log("ok");
@@ -61,20 +64,30 @@ var i = 1;
 		var dialogi = function(){
 			
 		var body = msgList.response[(i)].body;
+		console.log(body);
 		var date = new Date((msgList.response[(i)].date)*1000);
 		var dateTime = date.getHours() +":" + date.getMinutes() +":" + date.getSeconds()/*.toLocaleString("ru", options)*/;
 		var title = msgList.response[(i)].title;
 		var uid = msgList.response[(i)].uid;
+		// usInf 
+		//		if (usInf[(uid)].photo_100 === undefined) reqUsInf();
+		//console.log(usInf[(uid)]);
+		//if("attachment" in result.response[i])
+		var foto = usInf[uid].photo_100;
+		//console.log(foto);
+
+		//console.log(usInf);
+
+
 		var out = msgList.response[(i)].out;
 		var read_state = msgList.response[(i)].read_state;
-		text = uid + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
+		text = "<img src=" + foto + ">" + "<br>" + uid + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
 			div = document.createElement('div');
 			div.className = "alert";
 			div.innerHTML = "<br>" + text ;
 			//console.log(i + "\t" + text);
 			document.getElementById("mytabi").appendChild(div);
 			
-			// content.style.background = "cyan";
 			if(out) {
 				div.style.background = "#bbb";};
 				if(read_state){
@@ -85,6 +98,8 @@ var i = 1;
 				dialogi();
 		};
 		dialogi();
+		reqUsInf();
+		console.log(usInf[(uid)]);
 }, 0);
 };
 
@@ -112,28 +127,9 @@ window.setInterval(function(){
 
 		localStorage.x = response.status;
 		msgList = JSON.parse(response.msg);
-		//console.log(response.status);
-		//console.log(localStorage.x);
-			// if (localStorae.x != response.status)
-			// 	if(response.status) _true()
-			// 		else _false();
-
-			// if (localStorage.x != i){
-			// 	if(i==1){
-			// 	_true();
-			// }
-			// else {
-			// 	_false();
-			// };
-			// };
-
-			// if (localStorage.x == 1){
-			// 	i=1;
-			// }
-			// else {
-			// 	i=0;
-			// };
-
+		usInf = JSON.parse(response.inf);
+		//console.log(response.inf);
+		//console.log(usInf);
 
 });
 }, 100);

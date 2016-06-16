@@ -114,9 +114,11 @@ var news,
 	usInf = {},
 	count = 0;
 
+var request = new XMLHttpRequest();
+
 var i = 0, w = 0, h = 0;
 window.setInterval( function() {
-var request = new XMLHttpRequest();
+//var request = new XMLHttpRequest();
 request.open('POST', 'https://api.vk.com/method/messages.getDialogs?count=9&access_token='+App.token);
 request.onreadystatechange = function(e) {
 	if (this.readyState == 4) {
@@ -149,22 +151,72 @@ window.setInterval( function() {
 	chrome.browserAction.setBadgeText({text: count.toString()});
 	console.log(count);
 
-	i = 1;
+}, 3320);
+//
+
+var sumId;
+
+setTimeout(function() {
+i = 1;
 	var inf = function (){
 	// var i = 1;
 	var uid = result.response[(i)].uid;
 	usInf[(uid)] = {id: uid};
 	i++;
-	if(i <= 10)
+	if(i < 10)
 		inf();
 };
 inf();
+///////////
+
+//Object.keys(menu).length
+var sumId;
+for (var key in usInf){
+	if (sumId == undefined) sumId = usInf[key].id+","
+		else sumId += usInf[key].id+",";
+	console.log(sumId);
+}
+
+var sumInf;
+
+reqUsInf = function requestUsInf() {
+request.open('POST', 'https://api.vk.com/method/users.get?user_ids='+sumId+'&fields=photo_100');
+request.onreadystatechange = function(e) {
+	if (this.readyState == 4) {
+		if (this.status == 200) {
+			
+			sumInf = JSON.parse(this.responseText);
+			//usInf[(uid)] = response[0];
+			//console.log(usInf[(uid)]);
+			console.log(sumInf);
+
+					var countUs = 0;
+					for (var key in usInf){
+						if("photo_100" in usInf[key]) console.log(key)
+							else {usInf[key] = sumInf.response[countUs];
+								console.log(usInf[key]);
+								console.log(usInf);
+							};
+						countUs++;
+					}
+				console.log(usInf);
+				localStorage.usinf = JSON.stringify(usInf);
+        }
+        else {
+            //сообщаем о ошибке
+        }
+    }
+}
+request.send(null);
+};
+//////////////
+reqUsInf();
+console.log(sumInf);
+
+
 console.log(usInf);
-}, 3320);
-//
-
-
-
+//localStorage.usinf = JSON.stringify(usInf);
+}, 400);
 
 // chrome.browserAction.setBadgeText({text: badge_text});
 // chrome.browserAction.setTitle({title: title_text});
@@ -199,7 +251,7 @@ window.setTimeout (function() {
 
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	    if (request.method == "getStatus")
-	      sendResponse({status: localStorage['x'], msg: localStorage['msgList']});
+	      sendResponse({status: localStorage['x'], msg: localStorage['msgList'], inf: localStorage['usinf']});
 	    else
 	      sendResponse({}); // snub them.
 	});
