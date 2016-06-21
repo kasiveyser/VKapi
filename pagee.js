@@ -8,6 +8,7 @@ var text, div, date, uid, localStorage;
 var msgList;
 var usInf;
 var request = new XMLHttpRequest();
+var di;
 
 
 setTimeout( function() {
@@ -34,6 +35,8 @@ console.log("false");
 
 
 var _true = function _tru (){window.setTimeout (function() {
+	$(".myTabi").remove();
+	//if(document.getElementById("mytabi")) $("#mytabi").remove();
 	divs = document.createElement('div');
 	divs.className = "myTabi";
 	//divs.id = "mytabi";
@@ -61,8 +64,10 @@ console.log("true");
 //console.log(localStorage.x);
 var i = 1;
 
-		var dialogi = function(){
-			
+		var dialogList = function(){
+
+			msgList = JSON.parse(localStorage.msgList);
+			if (msgList.response[(i)].body == undefined) _true()
 		var body = msgList.response[(i)].body;
 		console.log(body);
 		var date = new Date((msgList.response[(i)].date)*1000);
@@ -76,10 +81,15 @@ var i = 1;
 
 		var out = msgList.response[(i)].out;
 		var read_state = msgList.response[(i)].read_state;
-		text = "<img src=" + foto + ">" + "<br>" + name + "<br>" + uid + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
+		text = "<img src=" + foto + ">" + name + "<br>" + "<br>" + title + "<br>" + body + "<br><br>" + dateTime;
 			div = document.createElement('div');
 			div.className = "alert";
-			div.innerHTML = "<br>" + text ;
+			div.innerHTML = "<br>" + text;
+			div.id = uid;
+			div.onclick = function(){
+				//console.log("oki")
+				go(uid);
+			};
 			//console.log(i + "\t" + text);
 			document.getElementById("mytabi").appendChild(div);
 			
@@ -90,10 +100,9 @@ var i = 1;
 				}else{div.className = "alert unread"}
 			i++;
 			if (i < 10)
-				dialogi();
+				dialogList();
 		};
-		dialogi();
-		reqUsInf();
+		dialogList();
 		console.log(usInf[(uid)]);
 }, 0);
 };
@@ -121,10 +130,111 @@ window.setInterval(function(){
 				else _false();
 
 		localStorage.x = response.status;
-		msgList = JSON.parse(response.msg);
+		localStorage.msgList = (response.msg);
 		usInf = JSON.parse(response.inf);
+		token = response.token;
+
 		//console.log(response.inf);
 		//console.log(usInf);
 
 });
 }, 100);
+
+var message;
+
+// localStorage.message = "";
+// localStorage.text ="";
+var msgHist;
+var go = function go(uid){
+	console.log(uid);
+request.open('POST', 'https://api.vk.com/method/messages.getHistory?user_id=' + uid + '&access_token='+token);
+request.onreadystatechange = function(e) {
+	if (this.readyState == 4) {
+		if (this.status == 200) {
+			//msgHist = this.responseText;
+			var response = JSON.parse(this.responseText);
+			msgHist = response.response;
+			console.log(msgHist);
+			//return msgHist;
+			$(".alert").remove();
+var text = "";
+
+
+			for (var key in msgHist){
+				if (msgHist[key].body != undefined) 
+					if(msgHist[key].out === 0) text = "<p style='text-align:right' class='right' >" + msgHist[key].body + "</p>" + text
+						else text = "<p style='text-align:left' class='left'>" + msgHist[key].body + "</p>" + text;
+				console.log(msgHist[key].body);
+			};
+
+				console.log(text);
+
+		var printMsg = function(){
+			if(document.getElementById("msgX")) $("#msgX").remove();
+			div = document.createElement('div');
+			div.id = "msgX";
+			//div.className = "alert";
+			div.innerHTML = "<br>" + text;
+			console.log(message);
+
+
+			//document.getElementById("mytabi").appendChild(div);
+			document.getElementById("mytabi").insertBefore(div, document.getElementById("mytabi").children[0]);
+
+			var divDown = $('#msgX');
+			divDown.scrollTop(divDown.prop('scrollHeight'));
+
+			var back = document.createElement('div');
+			back.className = "back";
+			document.getElementById('content_vk').appendChild(back);
+			back.onclick = function(){
+				_true();
+			}
+				};
+
+				printMsg();
+
+				
+
+			mSend = document.createElement('div');
+			mSend.className = "form";
+			mSend.innerHTML= '<form>\
+						 <input type="textarea" id="send" name="message" autocomplete="off" autofocus>\
+						<input type="submit" id="send2" value="send"></form>';
+			document.getElementById("mytabi").appendChild(mSend);
+
+			// mSend.onclick = function(){
+			// 	message = document.getElementById("send").value;
+			// 	console.log(message);
+			// 	document.getElementById("send").value = "";
+			// 	return message;
+			// };
+
+			$("form").on("submit", function(){
+				message = document.getElementById("send").value;
+				var request = new XMLHttpRequest;
+				request.open('POST', 'https://api.vk.com/method/messages.send?user_id=' + uid + '&message=' + message + '&access_token='+token);
+				request.send(null);
+				console.log(message);
+				text = text + "<p style='text-align:left' class='left'>" + message + "</p>";
+				printMsg(message);
+				//localStorage.message = message;
+				document.getElementById("send").value = "";
+
+
+				return false;
+				return message;
+
+			})
+
+i=1;
+console.log(i++);
+
+        }
+        else {
+            //сообщаем о ошибке
+        }
+    }
+}
+request.send(null);
+};

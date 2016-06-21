@@ -29,7 +29,6 @@ var App = {
 			}
 			else {
 				self.token = data.token;
-				self.preload();
 			}
 		});
 	},
@@ -39,7 +38,6 @@ var App = {
 		var self = this;
 		var callback = function(){
 			if(self.token != 0) {
-				self.preload();
 				self.ah = false;
 				self.error = false;
 				return false;
@@ -53,7 +51,8 @@ var App = {
 	}
 }
 
-var Auth = {	
+var Auth = {
+	//token:,
 	vkCLientId           :'5485392',
 	vkRequestedScopes    : 'audio,offline,messages',
 	vkAuthenticationUrl  : 'https://oauth.vk.com/authorize?client_id=5485392&scope=audio,offline,messages&redirect_uri=http%3A%2F%2Foauth.vk.com%2Fblank.html&display=page&response_type=token',
@@ -134,7 +133,7 @@ request.onreadystatechange = function(e) {
     }
 }
 request.send(null);
-}, 320);
+}, 360);
 
 // счетчик непрочитанных
 
@@ -216,7 +215,7 @@ console.log(sumInf);
 
 console.log(usInf);
 //localStorage.usinf = JSON.stringify(usInf);
-}, 400);
+}, 500);
 
 // chrome.browserAction.setBadgeText({text: badge_text});
 // chrome.browserAction.setTitle({title: title_text});
@@ -247,16 +246,18 @@ chrome.browserAction.onClicked.addListener(function(/*tab*/) {
 	count = "";
 	chrome.browserAction.setBadgeText({text: count});
 
+	localStorage.token = App.token;
+
 window.setTimeout (function() {
 
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	    if (request.method == "getStatus")
-	      sendResponse({status: localStorage['x'], msg: localStorage['msgList'], inf: localStorage['usinf']});
+	      sendResponse({status: localStorage['x'], msg: localStorage['msgList'], inf: localStorage['usinf'], token:localStorage['token']});
 	    else
 	      sendResponse({}); // snub them.
 	});
 
 
 	return localStorage.x
-}, 10);
+}, 15);
 });
